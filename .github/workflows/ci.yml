@@ -35,7 +35,8 @@ jobs:
           fi
 
           if [[ "$(echo "$RELEASE_TAG" | rev | cut -d "-" -f2- | rev)" == "$NEXTDNS_TAG" ]]; then
-            RELEASE_NUM=$(echo "$RELEASE_NUM+1" | bc)
+            exit 1
+            #RELEASE_NUM=$(echo "$RELEASE_NUM+1" | bc)
           else
             RELEASE_NUM="0"
           fi
