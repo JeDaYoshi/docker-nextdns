@@ -117,7 +117,7 @@ jobs:
           body: |
             This is an automated deployment of [NextDNS CLI ${{ env.NEXTDNS_TAG }}](https://github.com/nextdns/nextdns/releases/${{ env.NEXTDNS_TAG }}).
 
-            You should be able to fetch this image using your day-to-day Docker commands.
+            You should be able to fetch this image using Docker/podman.
             ```sh
             docker pull ${{ env.IMAGE_NAME }}:latest  # always up-to-date
             docker pull ${{ env.IMAGE_NAME }}:${{ env.NEXTDNS_VER }}  # stick to this NextDNS release
