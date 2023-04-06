@@ -8,19 +8,19 @@ Tags will be automatically published under matching versions as upstream release
 ## Usage
 
 You can pass what you would use with arguments as environment variables to the container.
-Make sure to prefix all variables with `NEXTDNS_`, where `NEXTDNS_CONFIG=xxxxxx` would become `-config=xxxxxx` to the CLI.
+Make sure to prefix all variables with `NEXTDNS_`, where `NEXTDNS_PROFILE=xxxxxx` would become `-profile=xxxxxx` to the CLI.
 
 In addition, in order to support
-[Conditional Configuration](https://github.com/nextdns/nextdns/wiki/Conditional-Configuration) and 
+[Conditional Profiles](https://github.com/nextdns/nextdns/wiki/Conditional-Profile) and 
 [Split Horizon/Conditional Forwarders](https://github.com/nextdns/nextdns/wiki/Split-Horizon),
-you can also use `NEXTDNS_CONFIG_$NAME` or `NEXTDNS_FORWARDER_$NAME` to pass additional settings
+you can also use `NEXTDNS_PROFILE_$NAME` or `NEXTDNS_FORWARDER_$NAME` to pass additional settings
 (where `$NAME` is a personal identifier, and is not passed to the CLI.)
 
 To start it, it's how you would usually do it:
 
 ```sh
 docker pull jedayoshi/nextdns:latest
-docker run -d --name nextdns --restart always -p "53:53/tcp" -p "53:53/udp" --env "NEXTDNS_CONFIG=xxxxxx" --env "NEXTDNS_CACHE_SIZE=10m" --env "NEXTDNS_REPORT_CLIENT_INFO=true" jedayoshi/nextdns:latest"
+docker run -d --name nextdns --restart always -p "53:53/tcp" -p "53:53/udp" --env "NEXTDNS_PROFILE=xxxxxx" --env "NEXTDNS_CACHE_SIZE=10m" --env "NEXTDNS_REPORT_CLIENT_INFO=true" jedayoshi/nextdns:latest"
 ```
 
 Or, use `docker-compose`! Here's an example:
@@ -37,7 +37,7 @@ services:
       - "53:53/tcp"
       - "53:53/udp"
     environment:
-      NEXTDNS_CONFIG: "xxxxxx"
+      NEXTDNS_PROFILE: "xxxxxx"
       NEXTDNS_CACHE_SIZE: "10m"
       NEXTDNS_REPORT_CLIENT_INFO: "true"
     # Warning: This WILL use your DNS query quota. Since its TTL is 300s,
@@ -72,9 +72,9 @@ services:
       - "53:53/tcp"
       - "53:53/udp"
     environment:
-      NEXTDNS_CONFIG: "xxxxxx"
-      NEXTDNS_CONFIG_HOME: "192.168.0.0/24=aaaaaa"
-      NEXTDNS_CONFIG_OFFICE: "10.18.0.0/16=wwwwww"
+      NEXTDNS_PROFILE: "xxxxxx"
+      NEXTDNS_PROFILE_HOME: "192.168.0.0/24=aaaaaa"
+      NEXTDNS_PROFILE_OFFICE: "10.18.0.0/16=wwwwww"
       NEXTDNS_CACHE_SIZE: "10m"
       NEXTDNS_REPORT_CLIENT_INFO: "true"
       NEXTDNS_USE_HOSTS: "true"

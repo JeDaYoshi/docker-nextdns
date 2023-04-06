@@ -105,7 +105,7 @@ jobs:
       - name: Publish GitHub release
         uses: actions/create-release@v1
         env:
-          GITHUB_TOKEN: ${{ github.token }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NEXTDNS_TAG: ${{ needs.fetch.outputs.nextdns_tag }}
           NEXTDNS_VER: ${{ needs.fetch.outputs.nextdns_ver }}
           RELEASE_NEW: ${{ needs.fetch.outputs.release_new }}
