@@ -2,8 +2,8 @@
 # https://github.com/JeDaYoshi/docker-nextdns
 set -e
 
-# By default I'd rather disable reading from /etc/hosts,
-# to not have conflicts in regards to the container's name.
+# /etc/hosts usage is disabled by default to not
+# have conflicts in regards to the container's name.
 export NEXTDNS_USE_HOSTS="${NEXTDNS_USE_HOSTS:-false}"
 
 CLI_ARGS="-setup-router=true"
