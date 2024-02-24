@@ -1,6 +1,6 @@
 #!/bin/sh
-# https://github.com/JeDaYoshi/docker-nextdns
 set -e
+# https://github.com/JeDaYoshi/docker-nextdns
 
 # /etc/hosts usage is disabled by default to not
 # have conflicts in regards to the container's name.
