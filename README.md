@@ -84,7 +84,7 @@ services:
 
 ## License
 
-[WTFPL](LICENSE) for the `docker-entrypoint.sh` script, since it's rather minimal.
+[Unlicense](LICENSE) for the `docker-entrypoint.sh` script, since it's rather minimal.
 
 [NextDNS CLI](https://github.com/nextdns/nextdns) is licensed under the
 [MIT License](https://github.com/nextdns/nextdns/blob/master/LICENSE).

@@ -7,6 +7,8 @@ on:
     paths-ignore:
       - "*.md"
       - "LICENSE"
+  schedule:
+    - cron: "0 0 * * *"
 
 env:
   IMAGE_NAME: jedayoshi/nextdns
@@ -18,7 +20,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@master
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
@@ -45,14 +47,6 @@ jobs:
           echo "::set-output name=docker_ver::$(echo "$RELEASE_TAG" | sed "s/^v//" | rev | cut -d "-" -f2- | rev)"
           echo "::set-output name=release_new::$NEXTDNS_TAG-$RELEASE_NUM"
 
-      - name: Repo keep-alive
-        uses: gautamkrishnar/keepalive-workflow@master
-        continue-on-error: true
-        with:
-          commit_message: repo keepalive [ci skip]
-          committer_username: JeDa
-          committer_email: "bot@jeda.im"
-
     outputs:
       nextdns_tag: ${{ steps.release.outputs.nextdns_tag }}
       release_tag: ${{ steps.release.outputs.release_tag }}
@@ -65,29 +59,29 @@ jobs:
     runs-on: ubuntu-latest
     needs: fetch
     if: needs.fetch.outputs.docker_ver != needs.fetch.outputs.nextdns_ver || github.ref == 'refs/heads/master'
-    
+
     env:
       # This should be all the platforms both NextDNS and Alpine for Docker support in common.
       ARCH_LIST: linux/386,linux/amd64,linux/arm64,linux/arm/v6,linux/arm/v7
 
     steps:
       - name: Set up QEMU
-        uses: docker/setup-qemu-action@v1
+        uses: docker/setup-qemu-action@v3
         with:
           platforms: ${{ env.ARCH_LIST }}
 
       - name: Set up Docker Buildx
         id: buildx
-        uses: docker/setup-buildx-action@v1
+        uses: docker/setup-buildx-action@v3
 
       - name: Login to Docker Hub
-        uses: docker/login-action@v1
+        uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Build and push Docker image
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v6
         with:
           builder: ${{ steps.buildx.outputs.name }}
           build-args: |
@@ -103,7 +97,7 @@ jobs:
 
     steps:
       - name: Publish GitHub release
-        uses: actions/create-release@v1
+        uses: softprops/action-gh-release@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NEXTDNS_TAG: ${{ needs.fetch.outputs.nextdns_tag }}
@@ -111,7 +105,7 @@ jobs:
           RELEASE_NEW: ${{ needs.fetch.outputs.release_new }}
         with:
           tag_name: ${{ env.RELEASE_NEW }}
-          release_name: ${{ env.RELEASE_NEW }}
+          name: ${{ env.RELEASE_NEW }}
           body: |
             This is an automated deployment of [NextDNS CLI ${{ env.NEXTDNS_TAG }}](https://github.com/nextdns/nextdns/releases/${{ env.NEXTDNS_TAG }}).
 
@@ -120,3 +114,17 @@ jobs:
             docker pull ${{ env.IMAGE_NAME }}:latest  # always up-to-date
             docker pull ${{ env.IMAGE_NAME }}:${{ env.NEXTDNS_VER }}  # stick to this NextDNS release
             ```
+
+  keepalive:
+    name: Keepalive Workflow
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write
+    steps:
+      - name: Repo keep-alive
+        uses: gautamkrishnar/keepalive-workflow@v2
+        continue-on-error: true
+        with:
+          commit_message: repo keepalive [ci skip]
+          committer_username: JeDa
+          committer_email: "bot@jeda.im"
