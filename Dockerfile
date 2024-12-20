@@ -8,10 +8,9 @@ RUN case ${TARGETPLATFORM} in \
       "linux/arm/v7") TARGETARCH=armv7 ;; \
       "linux/arm/v6") TARGETARCH=armv6 ;; \
     esac \
-    && wget -O /tmp/nextdns.tar.gz https://github.com/nextdns/nextdns/releases/download/v${NEXTDNS_VERSION}/nextdns_${NEXTDNS_VERSION}_linux_$TARGETARCH.tar.gz \
-    && tar xf /tmp/nextdns.tar.gz -C /usr/bin nextdns \
-    && rm /tmp/nextdns.tar.gz \
-    && apk --no-cache add bind-tools
+    && wget -O /tmp/nextdns.apk https://github.com/nextdns/nextdns/releases/download/v${NEXTDNS_VERSION}/nextdns_${NEXTDNS_VERSION}_linux_${TARGETARCH}.apk \
+    && apk --no-cache --allow-untrusted add /tmp/nextdns.apk bind-tools \
+    && rm /tmp/nextdns.apk
 
 COPY docker-entrypoint.sh /
 
