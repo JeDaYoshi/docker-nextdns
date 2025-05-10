@@ -1,5 +1,13 @@
 # NextDNS CLI running on Docker
 
+**THIS REPOSITORY IS DEPRECATED.**
+
+Since NextDNS v1.44.4, the team has been publishing official Docker images.
+Use [`nextdns/nextdns`](https://hub.docker.com/r/nextdns/nextdns) instead.
+[Read the wiki for more information on usage.](https://github.com/nextdns/nextdns/wiki/Docker)
+
+---
+
 This is a simple Docker image that allows you to containerize
 your [NextDNS CLI](https://github.com/nextdns/nextdns) client.
 
